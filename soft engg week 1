@@ -1,0 +1,101 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNyltaOoOWO1iYhFB9/1WWX",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/gopal590/gopal590/blob/main/soft%20engg%20week%201\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ihyZ_Yaj9L5P",
+        "outputId": "e67f19f4-af98-4aff-86ad-b4bfb1dd74ba"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Enter mode ('hardcoded', 'input', or 'file'): file\n",
+            "Weather simulation for set 1:\n",
+            "  Temperature at time 1: -0.21 degrees\n",
+            "  Temperature at time 2: -0.18 degrees\n",
+            "  Temperature at time 3: -0.15 degrees\n",
+            "Weather simulation for set 2:\n",
+            "  Temperature at time 1: -0.26 degrees\n",
+            "  Temperature at time 2: -0.24 degrees\n",
+            "  Temperature at time 3: -0.22 degrees\n",
+            "Weather simulation for set 3:\n",
+            "  Temperature at time 1: -0.80+0.35j degrees\n",
+            "  Temperature at time 2: -0.80+0.28j degrees\n",
+            "  Temperature at time 3: -0.80+0.20j degrees\n"
+          ]
+        }
+      ],
+      "source": [
+        "def quadratic_solution(a, b, time, c):\n",
+        "    discriminant = b**2 - 4*a*(c - time)\n",
+        "    sol1 = (-b - discriminant**0.5) / (2*a)\n",
+        "    sol2 = (-b + discriminant**0.5) / (2*a)\n",
+        "    return sol1, sol2\n",
+        "\n",
+        "def weather_model(mode):\n",
+        "    if mode == \"hardcoded\":\n",
+        "        a, b, c = 0.5, -2.0, 20.0\n",
+        "        for time in range(1, 4):\n",
+        "            temp = quadratic_solution(a, b, time, c)[1]\n",
+        "            print(f\"Temperature at time {time}: {temp:.2f} degrees\")\n",
+        "    elif mode == \"input\":\n",
+        "        a = float(input(\"Enter coefficient a: \"))\n",
+        "        b = float(input(\"Enter coefficient b: \"))\n",
+        "        c = float(input(\"Enter initial temperature: \"))\n",
+        "        for time in range(1, 4):\n",
+        "            temp = quadratic_solution(a, b, time, c)[1]\n",
+        "            print(f\"Temperature at time {time}: {temp:.2f} degrees\")\n",
+        "    elif mode == \"file\":\n",
+        "        try:\n",
+        "            with open('spam.txt', 'r') as file:\n",
+        "                for set_num, line in enumerate(file):\n",
+        "                    try:\n",
+        "                        a, b, c = [float(value) for value in line.strip().split() if value]\n",
+        "                        print(f\"Weather simulation for set {set_num + 1}:\")\n",
+        "                        for time in range(1, 4):\n",
+        "                            temp = quadratic_solution(a, b, time, c)[1]\n",
+        "                            print(f\"  Temperature at time {time}: {temp:.2f} degrees\")\n",
+        "                    except ValueError:\n",
+        "                        print(f\"Warning: Invalid data on line {set_num + 1}. Skipping.\")\n",
+        "        except FileNotFoundError:\n",
+        "            print(\"Error: spam.txt not found.\")\n",
+        "\n",
+        "# Choose the mode of operation\n",
+        "mode = input(\"Enter mode ('hardcoded', 'input', or 'file'): \").lower()\n",
+        "weather_model(mode)"
+      ]
+    }
+  ]
+}
